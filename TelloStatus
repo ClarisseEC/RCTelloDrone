@@ -1,36 +1,32 @@
-#REQUIRES DEBUGGING
-
+# REQUIRES DEBUGGING
 from djitellopy import Tello
-import cv2, math, time
+import cv2
 
 drone = Tello()
-
 drone.connect()
 
-#get variables
-BatteryLife = Tello.self.get_battery()
-type(BatteryLife) #turns into an integer value
+# get variables
+BatteryLife = drone.get_battery()
+type(BatteryLife)  # get_battery should return an int, but you can check here
 
-CurrentTotalSpeed = Tello.get_acceleration_x + Tello.get_acceleration_y + Tello.get_acceleration_z
+CurrentTotalSpeed = drone.get_acceleration_x + drone.get_acceleration_y + drone.get_acceleration_z
 
 CurrentTemp = Tello.get_temperature
-
 
 drone.takeoff()
 drone.streamon()
 
 frame_read = drone.get_frame_read()
 
-while True:
-
+for x in range(10):     # i changed this to a for loop for now just so there's an endpoint, we can change this
+    # depending on the condition
     image = frame_read.frame
-    cv2.imshow("THE HECKING DRONE", image)
+    cv2.imread("THE HECKING DRONE", image)
 
-    print("Drone Battery Life: " + BatteryLife + "%")
-    #if BatteryLife <= (0.3 * BatteryLife)
-
+    print("Drone Battery Life: " + str(BatteryLife) + "%")
+    # if BatteryLife <= (0.3 * BatteryLife)
 
     print("Drone Speed (x + y + z): " + CurrentTotalSpeed)
-    print("Drone Temperature: " + CurrentTemp)
+    print("Drone Temperature: " + str(CurrentTemp))
 
 drone.land()
