@@ -2,6 +2,7 @@
 # --- (c) 02/2020 f41ardu
 #
 # Tello cam using opencv proof of concept
+# https://tellopilots.com/threads/taking-pictures-with-tello-drone-using-python-3.4964/
 #
 #
 
