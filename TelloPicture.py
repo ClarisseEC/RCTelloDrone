@@ -1,46 +1,36 @@
-#
-# --- (c) 02/2020 f41ardu
-#
-# Tello cam using opencv proof of concept
-# https://tellopilots.com/threads/taking-pictures-with-tello-drone-using-python-3.4964/
-#
-#
-
-# import opencv 4.2.0
-from djitellopy import Tello
+import time
 import cv2
+from djitellopy import Tello
 
-tello = Tello()
+tello_obj = Tello()
+tello_obj.connect()
+tello_obj.streamon()
 
-tello.connect()
-tello.streamon()
+tello_video = cv2.VideoCapture('udp://@0.0.0.0:11111')
 
-telloVideo = cv2.VideoCapture("udp://@0.0.0.0:11111")
-
-# wait for frame
-ret = False
-# scale down
 scale = 3
-
-while (True):
-    # Capture frame-by-framestreamon
-    ret, frame = telloVideo.read()
-    if (ret):
-        # Our operations on the frame come here
+while True:
+    ret, frame = tello_video.read()
+    if ret:
         height, width, layers = frame.shape
         new_h = int(height / scale)
         new_w = int(width / scale)
-        resize = cv2.resize(frame, (new_w, new_h))  # <- resize for improved performance
-        # Display the resulting frame
+        resize = cv2.resize(frame, (new_w, new_h))
         cv2.imshow('Tello', resize)
 
-    if cv2.waitKey(1) & 0xFF == ord('m'):
-        cv2.imwrite("C:\Users\danny\OneDrive\Desktop\python stuff\pythonProject\StoredPics'\'test.jpg", resize)  # writes image test.bmp to disk
-        print("Take Picture")
+        # Take picture when "m" is pressed
+        if cv2.waitKey(1) & 0xFF == ord('m'):
+            # Get current timestamp
+            current_time = time.strftime('%Y%m%d-%H%M%S')
+            # Save image with timestamp as filename
+            filename = f'tello-{current_time}.jpg'
+            cv2.imwrite(filename, resize)
+            print(f'Saved image: {filename}')
 
+    # End program when "/" is pressed
     if cv2.waitKey(1) & 0xFF == ord('/'):
         break
 
-# When everything done, release the capture
-telloVideo.release()
+tello_obj.streamoff()
+tello_video.release()
 cv2.destroyAllWindows()
