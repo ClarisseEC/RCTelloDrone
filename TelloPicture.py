@@ -35,7 +35,7 @@ while (True):
         cv2.imshow('Tello', resize)
 
     if cv2.waitKey(1) & 0xFF == ord('m'):
-        cv2.imwrite("test.jpg", resize)  # writes image test.bmp to disk
+        cv2.imwrite("C:\Users\danny\OneDrive\Desktop\python stuff\pythonProject\StoredPics'\'test.jpg", resize)  # writes image test.bmp to disk
         print("Take Picture")
 
     if cv2.waitKey(1) & 0xFF == ord('/'):
