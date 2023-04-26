@@ -8,10 +8,10 @@ tello.connect()
 tello.streamon()
 
 # Define the tracker type (e.g. CSRT, KCF, MOSSE, etc.)
-tracker_type = "CSRT"
+tracker_type = "KCF"
 
 # Create a OpenCV tracker object
-tracker = cv2.TrackerCSRT_create() if tracker_type == "CSRT" else cv2.TrackerKCF_create()
+tracker = cv2.TrackerKCF_create()
 
 # Define the bounding box coordinates of the object to be tracked (x, y, w, h)
 bbox = (100, 100, 200, 200)
